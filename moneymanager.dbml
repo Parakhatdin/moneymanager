@@ -1,0 +1,50 @@
+Table moneymanager.members as members{
+  id bigint [pk, increment]
+  name varchar
+}
+
+Table moneymanager.member_authdata as member_authdata{
+  member_id bigint [pk, ref: > members.id]
+  email varchar [unique]
+  password varchar
+}
+
+Table moneymanager.families as families{
+  id bigint [pk, increment]
+  name varchar
+}
+
+Table moneymanager.roles as roles{
+  id bigint [pk, increment]
+  name varchar
+}
+
+Table moneymanager.family_members as family_members{
+  member_id bigint [ref: > members.id]
+  family_id bigint [ref: > families.id]
+  role_id bigint [ref: > roles.id]
+  
+  Indexes {
+    (member_id, family_id) [pk]
+  }
+}
+
+Table moneymanager.envelopes as envelopes{
+  id bigint [pk, increment]
+  name varchar
+  member_id bigint [ref: > members.id]
+}
+
+Table moneymanager.envelope_transactions as envelope_transactions{
+  id bigint [pk, increment]
+  envelope_id bigint [ref: > envelopes.id]
+  amount bigint
+  member_id bigint [ref: > members.id]
+  category_id bigint [ref: > categories.id]
+}
+
+Table moneymanager.categories as categories{
+  id bigint [pk, increment]
+  name varchar
+  is_income bool
+}
